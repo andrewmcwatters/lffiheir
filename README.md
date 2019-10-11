@@ -4,6 +4,14 @@ A package hierarchy library for LuaJIT
 **lffiheir** allows you to use a standard project source hierarchy (`bin`,
 `include`, `lib`, `lua`) for your Lua projects.
 
+### `bin`
+#### Windows
+`bin` is added to the search path used to locate DLLs for the application,
+allowing you to require Lua binary modules from this directory.
+
+### `lib`
+`lib` is added to `package.path` and `package.cpath`.
+
 ## License
 MIT License
 
