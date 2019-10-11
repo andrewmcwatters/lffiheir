@@ -18,15 +18,16 @@ if ( jit.os == "Windows" ) then
 	]]
 
 	-- Get working directory
-	execdir       = gsub( arg[ 0 ], "\\lua\\init%.lua$", "\\" )
+	execdir         = gsub( arg[ 0 ], "\\lua\\init%.lua$", "\\" )
+	package.execdir = execdir
 
 	-- Set DLL directory
 	ffi.C.SetDllDirectoryA( execdir .. "bin" )
 
 	-- Add `lib'
-	package.path  = package.path  .. ";" .. execdir .. "lib\\?.lua;"
-	package.cpath = package.cpath .. ";" .. execdir .. "lib\\?.dll;"
-	package.cpath = package.cpath .. execdir .. "lib\\loadall.dll"
+	package.path    = package.path  .. ";" .. execdir .. "lib\\?.lua;"
+	package.cpath   = package.cpath .. ";" .. execdir .. "lib\\?.dll;"
+	package.cpath   = package.cpath .. execdir .. "lib\\loadall.dll"
 
 	-- Add `./?/init.lua'
 	if ( targetdir ) then
@@ -44,17 +45,18 @@ if ( jit.os == "Windows" ) then
 	end
 else
 	-- Get working directory
-	execdir       = gsub( arg[ 0 ], "/lua/init%.lua$", "/" )
+	execdir         = gsub( arg[ 0 ], "/lua/init%.lua$", "/" )
+	package.execdir = execdir
 
 	-- Add Windows LUA_LDIR paths
-	local ldir    = "./?.lua;!lua/?.lua;!lua/?/init.lua;"
-	package.path  = gsub( package.path, "^%./%?%.lua;", ldir )
-	package.path  = gsub( package.path, "!", execdir )
+	local ldir      = "./?.lua;!lua/?.lua;!lua/?/init.lua;"
+	package.path    = gsub( package.path, "^%./%?%.lua;", ldir )
+	package.path    = gsub( package.path, "!", execdir )
 
 	-- Add `lib'
-	package.path  = package.path  .. ";" .. execdir .. "lib/?.lua"
-	package.cpath = package.cpath .. ";" .. execdir .. "lib/?.so;"
-	package.cpath = package.cpath .. execdir .. "lib/loadall.so"
+	package.path    = package.path  .. ";" .. execdir .. "lib/?.lua"
+	package.cpath   = package.cpath .. ";" .. execdir .. "lib/?.so;"
+	package.cpath   = package.cpath .. execdir .. "lib/loadall.so"
 
 	-- Add `./?/init.lua'
 	if ( targetdir ) then
