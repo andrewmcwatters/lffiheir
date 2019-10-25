@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 -- A package hierarchy library for LuaJIT
--- lheir
+-- lffiheir
 -- Author: Andrew McWatters
 -------------------------------------------------------------------------------
 local ffi       = require( "ffi" )
