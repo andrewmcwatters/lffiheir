@@ -1,7 +1,7 @@
 # lffiheir
 A package hierarchy library for LuaJIT
 
-**lffiheir** allows you to use a standard project source hierarchy (`bin`,
+**lffiheir** allows you to use the filesystem hierarchy standard (`bin`,
 `include`, `lib`, `lua`) for your Lua projects.
 
 ### `bin`
@@ -15,7 +15,7 @@ allowing you to require Lua binary modules from this directory.
 ## License
 MIT License
 
-Copyright (c) 2020 Andrew McWatters
+Copyright (c) 2022 Andrew McWatters
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

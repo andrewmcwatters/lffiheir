@@ -1,75 +1,58 @@
--------------------------------------------------------------------------------
--- A package hierarchy library for LuaJIT
--- lffiheir
--- Author: Andrew McWatters
--------------------------------------------------------------------------------
-local ffi       = require( "ffi" )
+-- hier.lua
+-- a package hierarchy library for LuaJIT
+-- distributed under the MIT license
 
-local execdir   = "./"
-local gsub      = string.gsub
-local targetdir = arg[ 2 ]
+local ffi = require( "ffi" )
 
-if ( jit.os == "Windows" ) then
-	execdir = ".\\"
+local cwd = "./"
+local gsub = string.gsub
+local targetdir = arg[2]
 
-	-- Declare `SetDllDirectoryA`
-	ffi.cdef[[
-		int __stdcall SetDllDirectoryA(const char* lpPathName);
-	]]
+if (jit.os == "Windows") then
+  cwd = ".\\"
 
-	-- Get working directory
-	execdir         = gsub( arg[ 0 ], "\\lua\\init%.lua$", "\\" )
-	package.execdir = execdir
+  -- Declare `SetDllDirectoryA`
+  ffi.cdef[[
+    int __stdcall SetDllDirectoryA(const char* lpPathName);
+  ]]
 
-	-- Set DLL directory
-	ffi.C.SetDllDirectoryA( execdir .. "bin" )
+  -- Get working directory
+  cwd            = gsub(arg[0], "\\lua\\init%.lua$", "\\")
+  package.cwd    = cwd
 
-	-- Add `lib'
-	package.path    = package.path  .. ";" .. execdir .. "lib\\?.lua;"
-	package.cpath   = package.cpath .. ";" .. execdir .. "lib\\?.dll;"
-	package.cpath   = package.cpath .. execdir .. "lib\\loadall.dll"
+  -- Set DLL directory
+  ffi.C.SetDllDirectoryA(cwd .. "bin")
 
-	-- Add `./?/init.lua'
-	if ( targetdir ) then
-		package.path = gsub(
-			package.path,
-			"^%.\\%?%.lua;",
-			targetdir .. "\\?.lua;" .. targetdir .. "\\?\\init.lua;"
-		)
-	else
-		package.path = gsub(
-			package.path,
-			"^%.\\%?%.lua;",
-			execdir .. "?.lua;"
-		)
-	end
+  -- Add `lib'
+  package.path   = package.path  .. ";" .. cwd .. "lib\\?.lua;"
+  package.cpath  = package.cpath .. ";" .. cwd .. "lib\\?.dll;"
+  package.cpath  = package.cpath .. cwd .. "lib\\loadall.dll"
+
+  -- Add `./?/init.lua'
+  if (targetdir) then
+    package.path = gsub(package.path, "^%.\\%?%.lua;", targetdir .. "\\?.lua;" .. targetdir .. "\\?\\init.lua;")
+  else
+    package.path = gsub(package.path, "^%.\\%?%.lua;", cwd .. "?.lua;")
+  end
 else
-	-- Get working directory
-	execdir         = gsub( arg[ 0 ], "/lua/init%.lua$", "/" )
-	package.execdir = execdir
+  -- Get working directory
+  cwd            = gsub(arg[0], "/lua/init%.lua$", "/")
+  package.cwd    = cwd
 
-	-- Add Windows LUA_LDIR paths
-	local ldir      = "./?.lua;!lua/?.lua;!lua/?/init.lua;"
-	package.path    = gsub( package.path, "^%./%?%.lua;", ldir )
-	package.path    = gsub( package.path, "!", execdir )
+  -- Add Windows LUA_LDIR paths
+  local ldir     = "./?.lua;!lua/?.lua;!lua/?/init.lua;"
+  package.path   = gsub(package.path, "^%./%?%.lua;", ldir)
+  package.path   = gsub(package.path, "!", cwd)
 
-	-- Add `lib'
-	package.path    = package.path  .. ";" .. execdir .. "lib/?.lua"
-	package.cpath   = package.cpath .. ";" .. execdir .. "lib/?.so;"
-	package.cpath   = package.cpath .. execdir .. "lib/loadall.so"
+  -- Add `lib'
+  package.path   = package.path  .. ";" .. cwd .. "lib/?.lua"
+  package.cpath  = package.cpath .. ";" .. cwd .. "lib/?.so;"
+  package.cpath  = package.cpath .. cwd .. "lib/loadall.so"
 
-	-- Add `./?/init.lua'
-	if ( targetdir ) then
-		package.path = gsub(
-			package.path,
-			"^%./%?%.lua;",
-			targetdir .. "/?.lua;" .. targetdir .. "/?/init.lua;"
-		)
-	else
-		package.path = gsub(
-			package.path,
-			"^%./%?%.lua;",
-			execdir .. "?.lua;"
-		)
-	end
+  -- Add `./?/init.lua'
+  if (targetdir) then
+    package.path = gsub(package.path, "^%./%?%.lua;", targetdir .. "/?.lua;" .. targetdir .. "/?/init.lua;")
+  else
+    package.path = gsub(package.path, "^%./%?%.lua;", cwd .. "?.lua;")
+  end
 end
