@@ -30,7 +30,8 @@ if (jit.os == "Windows") then
 
   -- Add `./?/init.lua'
   if (targetdir) then
-    package.path = gsub(package.path, "^%.\\%?%.lua;", targetdir .. "\\?.lua;" .. targetdir .. "\\?\\init.lua;")
+    package.path = gsub(package.path, "^%.\\%?%.lua;", targetdir .. "\\?.lua;"
+      .. targetdir .. "\\?\\init.lua;")
   else
     package.path = gsub(package.path, "^%.\\%?%.lua;", cwd .. "?.lua;")
   end
@@ -51,7 +52,8 @@ else
 
   -- Add `./?/init.lua'
   if (targetdir) then
-    package.path = gsub(package.path, "^%./%?%.lua;", targetdir .. "/?.lua;" .. targetdir .. "/?/init.lua;")
+    package.path = gsub(package.path, "^%./%?%.lua;", targetdir .. "/?.lua;" ..
+	  targetdir .. "/?/init.lua;")
   else
     package.path = gsub(package.path, "^%./%?%.lua;", cwd .. "?.lua;")
   end
